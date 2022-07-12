@@ -28,3 +28,14 @@
     inputs:
     - name: preprocessed_dataset
       optional: true
+- pipeline:
+    name: preprocess-and-train
+    nodes:
+    - name: preprocess
+      type: execution
+      step: preprocess-dataset
+    - name: train
+      type: execution
+      step: train-model
+    edges:
+    - [preprocess.output.preprocessed_mnist.npz, train.input.preprocessed_dataset]
