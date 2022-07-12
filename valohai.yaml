@@ -30,12 +30,35 @@
       optional: true
 - pipeline:
     name: preprocess-and-train
+    edges:
+    - configuration: {}
+      source: preprocess.output.preprocessed_mnist.npz
+      target: train.input.preprocessed_dataset
     nodes:
     - name: preprocess
-      type: execution
+      on-error: stop-all
+      override: {}
       step: preprocess-dataset
-    - name: train
       type: execution
+    - name: train
+      on-error: stop-all
+      override: {}
       step: train-model
+      type: execution
+- pipeline:
+    name: utilspipeline
     edges:
-    - [preprocess.output.preprocessed_mnist.npz, train.input.preprocessed_dataset]
+    - configuration: {}
+      source: preprocess-dataset_1.output.preprocessed.mnist.npz
+      target: train-model_1.input.preprocessed_dataset
+    nodes:
+    - name: preprocess-dataset_1
+      on-error: stop-all
+      override: {}
+      step: preprocess-dataset
+      type: execution
+    - name: train-model_1
+      on-error: stop-all
+      override: {}
+      step: train-model
+      type: execution
