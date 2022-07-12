@@ -1,0 +1,30 @@
+- step:
+    name: preprocess-dataset
+    image: python:3.9
+    command:
+    - pip install -r requirements.txt
+    - python ./preprocess_dataset.py {parameters}
+    inputs:
+    - name: dataset
+      default: https://valohaidemo.blob.core.windows.net/mnist/mnist.npz
+      optional: false
+- step:
+    name: train-model
+    image: tensorflow/tensorflow:2.6.0
+    command:
+    - pip install -r requirements.txt
+    - python ./train.py {parameters}
+    parameters:
+    - name: learning_rate
+      default: 0.001
+      multiple-separator: ','
+      optional: false
+      type: float
+    - name: epochs
+      default: 5
+      multiple-separator: ','
+      optional: false
+      type: integer
+    inputs:
+    - name: preprocessed_dataset
+      optional: true
