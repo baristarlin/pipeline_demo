@@ -50,7 +50,7 @@
     edges:
     - configuration: {}
       source: preprocess-dataset_1.output.preprocessed.mnist.npz
-      target: train-model_1.input.dataset
+      target: train-model_1.input.preprocessed_dataset
     nodes:
     - name: preprocess-dataset_1
       on-error: stop-all
